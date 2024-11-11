@@ -10,25 +10,29 @@ pipeline {
 
         stage('Install Deps') {
             steps {
-                echo 'composer install'
+                echo 'Running composer install'
+                bat 'composer install'
             }
         }
-        
+
         stage('Build Laravel') {
             steps {
-                echo 'php artisan serve &'
+                echo 'Starting Laravel server'
+                bat 'start /b php artisan serve'
             } 
         } 
 
         stage('Install Node Dependencies') {
             steps {
-                echo 'npm install'
+                echo 'Running npm install'
+                bat 'npm install'
             }
         }
 
         stage('Compile Node Assets') {
             steps { 
-                echo 'npm run build'
+                echo 'Running npm run build'
+                bat 'npm run build'
             } 
         }
 
@@ -37,12 +41,12 @@ pipeline {
                 script {
                     def scannerHome = tool 'sonar-scanner'
                     withSonarQubeEnv('SonarQube') {
-                        sh """
-                            ${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=qualitytest1 \
-                            -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.login=sqa_0080af81d73aac8be61137fed7fca0ad3cda2f3e \
-                            -Dsonar.sources=./app \
+                        bat """
+                            ${scannerHome}\\bin\\sonar-scanner ^
+                            -Dsonar.projectKey=qualitytest1 ^
+                            -Dsonar.host.url=http://localhost:9000 ^
+                            -Dsonar.login=sqa_0080af81d73aac8be61137fed7fca0ad3cda2f3e ^
+                            -Dsonar.sources=./app ^
                             -Dsonar.exclusions="vendor/,storage/,bootstrap/cache/"
                         """
                     }
@@ -65,4 +69,3 @@ pipeline {
         }
     }
 }
-
