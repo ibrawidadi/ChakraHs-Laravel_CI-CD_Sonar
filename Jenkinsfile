@@ -20,13 +20,13 @@ pipeline {
             } 
         } 
 
-        stage('installer les dépendances Node') {
+        stage('Install Node Dependencies') {
             steps {
                 echo 'npm install'
             }
         }
 
-        stage('compiler les assets Node') {
+        stage('Compile Node Assets') {
             steps { 
                 echo 'npm run build'
             } 
@@ -61,7 +61,8 @@ pipeline {
 
     post {
         always {
-            echo "Analyse terminée, vérifiez SonarQube pour les résultats."
-        }
-    }
+            echo "Analysis complete. Check SonarQube for results."
+        }
+    }
 }
+
